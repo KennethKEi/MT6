@@ -4,8 +4,8 @@ using Photon.Pun;
 
 public class SimpleSampleCharacterControl : MonoBehaviour
 {
-    public PhotonView PV;
-
+    [SerializeField] private PhotonView PV;
+    
    
    
     
@@ -50,6 +50,9 @@ public class SimpleSampleCharacterControl : MonoBehaviour
 
     private List<Collider> m_collisions = new List<Collider>();
 
+    private Vector3 targetPosition;
+    private Quaternion targetRotation;
+
     private void Awake()
     {
         PV = GetComponent<PhotonView>();
@@ -60,10 +63,39 @@ public class SimpleSampleCharacterControl : MonoBehaviour
         }
         else
         {
-            return;
+            smoothMove();
         }
         
     }
+    private void OnPhotonSerializeview(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if(stream.IsWriting)
+        {
+            stream.SendNext(transform.position);
+            stream.SendNext(transform.rotation);
+        }
+        else
+        {
+            targetPosition = (Vector3)stream.ReceiveNext();
+            targetRotation = (Quaternion)stream.ReceiveNext();
+        }
+    }
+    private void DestroyRigid()
+    {
+        if(!PV.IsMine)
+        {
+            Destroy (this.m_rigidBody);
+        }
+    }
+
+
+    private void smoothMove()
+    {
+        transform.position = Vector3.Lerp(transform.position, targetPosition, 0.25f);
+        // the lower the number, the smoother the move is gonna be, but also, it will be more lag or more delay
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, 500 * Time.deltaTime); // rotate.towad take the shortest path
+    }
+
 
     private void OnCollisionEnter(Collision collision)
     {

@@ -278,8 +278,8 @@ GameObject:
   - component: {fileID: 7123611612283179921}
   - component: {fileID: 1938359791804709744}
   - component: {fileID: 2059303132364271804}
-  - component: {fileID: 714801672}
   - component: {fileID: 3812000181352998738}
+  - component: {fileID: 2334904634233631538}
   m_Layer: 0
   m_Name: MaleFreeSimpleMovement1
   m_TagString: Untagged
@@ -364,10 +364,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba158ff05cf30224f94bfdddec8e7635, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PV: {fileID: 0}
-  m_moveSpeed: 2
+  PV: {fileID: 2059303132364271804}
+  m_moveSpeed: 5
   m_turnSpeed: 200
-  m_jumpForce: 4
+  m_jumpForce: 10
   m_animator: {fileID: 7123611612283179921}
   m_rigidBody: {fileID: 7156180411516193649}
   m_controlMode: 1
@@ -386,30 +386,15 @@ MonoBehaviour:
   ObservedComponentsFoldoutOpen: 1
   Group: 0
   prefixField: -1
-  observableSearch: 2
+  observableSearch: 0
   Synchronization: 3
   OwnershipTransfer: 0
   ObservedComponents:
-  - {fileID: 714801672}
+  - {fileID: 0}
   - {fileID: 3812000181352998738}
   viewIdField: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &714801672
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7172407806757134913}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SynchronizePosition: 1
-  m_SynchronizeRotation: 1
-  m_SynchronizeScale: 0
 --- !u!114 &3812000181352998738
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -448,6 +433,21 @@ MonoBehaviour:
     LayerIndex: 0
   - SynchronizeType: 2
     LayerIndex: 1
+--- !u!114 &2334904634233631538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7172407806757134913}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
 --- !u!1 &7172409691298437487
 GameObject:
   m_ObjectHideFlags: 0

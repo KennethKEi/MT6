@@ -7,6 +7,9 @@ public class GameSetupController : MonoBehaviour
     // This script will be added to any multiplayer scene
     void Start()
     {
+        //PhotonNetwork.SendRate = 60;
+        //PhotonNetwork.SerializationRate = 30;
+
         CreatePlayer(); //Create a networked player object for each player that loads into the multiplayer scenes.
     }
 
