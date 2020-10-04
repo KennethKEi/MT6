@@ -2,13 +2,11 @@
 using UnityEngine;
 using Photon.Pun;
 
-public class SimpleSampleCharacterControl : MonoBehaviour
+
+public class SimpleSampleCharacterControl : MonoBehaviour, IPunObservable
+
 {
     [SerializeField] private PhotonView PV;
-    
-   
-   
-    
 
     private enum ControlMode
     {
@@ -67,19 +65,34 @@ public class SimpleSampleCharacterControl : MonoBehaviour
         }
         
     }
-    private void OnPhotonSerializeview(PhotonStream stream, PhotonMessageInfo info)
+
+    private void smoothMove()
     {
-        if(stream.IsWriting)
+        transform.position = Vector3.Lerp(transform.position, targetPosition, 0.25f);
+        // the lower the number, the smoother the move is gonna be, but also, it will be more lag or more delay
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, 500 * Time.deltaTime); // rotate.towad take the shortest path
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+
+        if (stream.IsWriting)
         {
             stream.SendNext(transform.position);
             stream.SendNext(transform.rotation);
+            Debug.Log("writing");
         }
         else
         {
             targetPosition = (Vector3)stream.ReceiveNext();
             targetRotation = (Quaternion)stream.ReceiveNext();
+            Debug.Log("receiving");
         }
+
+
     }
+
+
     private void DestroyRigid()
     {
         if(!PV.IsMine)
@@ -89,13 +102,7 @@ public class SimpleSampleCharacterControl : MonoBehaviour
     }
 
 
-    private void smoothMove()
-    {
-        transform.position = Vector3.Lerp(transform.position, targetPosition, 0.25f);
-        // the lower the number, the smoother the move is gonna be, but also, it will be more lag or more delay
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, 500 * Time.deltaTime); // rotate.towad take the shortest path
-    }
-
+ 
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -330,4 +337,6 @@ public class SimpleSampleCharacterControl : MonoBehaviour
         }    
        
     }
+
+   
 }

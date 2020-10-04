@@ -13,7 +13,9 @@ public class GameSetupController : MonoBehaviour
         CreatePlayer(); //Create a networked player object for each player that loads into the multiplayer scenes.
     }
 
-    private void CreatePlayer()
+    
+
+        private void CreatePlayer()
     {
         Debug.Log("Creating Player");
         PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "MaleFreeSimpleMovement1"), Vector3.zero, Quaternion.identity);
