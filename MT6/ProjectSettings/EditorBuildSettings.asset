@@ -4,5 +4,11 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/CodeMatchmakingMenuDemo.unity
+    guid: 74dc7948f0f14d64aaeb1459aa72064d
+  - enabled: 1
+    path: Assets/Scenes/MultiplayerSceneDemo.unity
+    guid: 6dc254e08b859be44b6f16928250a696
   m_configObjects: {}
