@@ -1,29 +1,26 @@
 ﻿using UnityEngine;
+using Photon.Pun;
 
 
-    //-------------------------------------------------------------
-    //--APR Player
-    //--Impact Contact
-    //
-    //--Unity Asset Store - Version 1.0
-    //
-    //--By The Famous Mouse
-    //
-    //--Twitter @FamousMouse_Dev
-    //--Youtube TheFamouseMouse
-    //-------------------------------------------------------------
+
 
 
 public class ImpactContact : MonoBehaviour
 {
 	public APRController APR_Player;
-    
+    //[SerializeField] private PhotonView PV;
+    public PhotonView PV;
     //Alert APR Player when collision enters with specified force amount
-	void OnCollisionEnter(Collision col)
+    void OnCollisionEnter(Collision col)
 	{
+        PV = GetComponent<PhotonView>();
+        if(PV.IsMine)
+        {
+
         
+
         //Knockout by impact
-		if(APR_Player.canBeKnockoutByImpact && col.relativeVelocity.magnitude > APR_Player.requiredForceToBeKO)
+        if (APR_Player.canBeKnockoutByImpact && col.relativeVelocity.magnitude > APR_Player.requiredForceToBeKO)
 		{
 			APR_Player.ActivateRagdoll();
             
@@ -53,4 +50,5 @@ public class ImpactContact : MonoBehaviour
             }
         }
 	}
+    }
 }

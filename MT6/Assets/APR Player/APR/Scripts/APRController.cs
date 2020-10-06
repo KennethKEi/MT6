@@ -1,31 +1,30 @@
 ﻿using System.Collections;
 using UnityEngine;
 using System.Linq;
+using Photon.Pun;
 
 
-    //-------------------------------------------------------------
-    //--APR Player
-    //--APRController (Main Player Controller)
-    //
-    //--Unity Asset Store - Version 1.0
-    //
-    //--By The Famous Mouse
-    //
-    //--Twitter @FamousMouse_Dev
-    //--Youtube TheFamouseMouse
-    //-------------------------------------------------------------
 
 
-public class APRController : MonoBehaviour
+
+public class APRController : MonoBehaviour, IPunObservable
 {
+    [SerializeField] private PhotonView PV;
+    private Vector3 targetPosition;
+    private Quaternion targetRotation;
+
+    [SerializeField] private Rigidbody m_rigidbody = null;
     
+
+
+
     //-------------------------------------------------------------
     //--Variables
     //-------------------------------------------------------------
-    
+
 
     //Active Ragdoll Player parts
-	public GameObject
+    public GameObject
 	//
 	Root, Body, Head,
 	UpperRightArm, LowerRightArm,
@@ -161,16 +160,52 @@ public class APRController : MonoBehaviour
     //////////////
     void Awake()
 	{
-        PlayerSetup();
+        PV = GetComponent<PhotonView>();
+        m_rigidbody = GetComponent<Rigidbody>();
+        if(PV.IsMine)
+        {
+            PlayerSetup();
+        }
+        else 
+        {           
+            return;
+        }
+        
+        
 	}
-
+    private void DestroyRigid()
+    {
+        if (!PV.IsMine)
+        {
+            Destroy(this.m_rigidbody);
+        }
+    }
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(transform.position);
+            stream.SendNext(transform.rotation);
+            Debug.Log("writing");
+        }
+        else
+        {
+            targetPosition = (Vector3)stream.ReceiveNext();
+            targetRotation = (Quaternion)stream.ReceiveNext();
+            Debug.Log("receiving");
+        }
+    }
 
 
     //---Updates---//
     ////////////////
     void Update()
     {
-        if(useControls && !inAir)
+        if(PV.IsMine)
+        { 
+    
+
+        if (useControls && !inAir)
         {
             PlayerMovement();
             
@@ -198,6 +233,11 @@ public class APRController : MonoBehaviour
         
         GroundCheck();
         CenterOfMass();
+        }
+        else
+        {
+            return;
+        }
     }
     
     
@@ -206,6 +246,8 @@ public class APRController : MonoBehaviour
     //////////////////////
     void FixedUpdate()
     {
+        if(PV.IsMine)
+        { 
         Walking();
         
         if(useControls)
@@ -214,6 +256,7 @@ public class APRController : MonoBehaviour
             ResetPlayerPose();
             
             PlayerGetUpJumping();
+        }
         }
     }
 
@@ -1209,5 +1252,6 @@ public class APRController : MonoBehaviour
             }
 		}
 	}
-    
+
+
 }

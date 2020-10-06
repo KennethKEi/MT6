@@ -1,26 +1,20 @@
 ﻿using System.Collections;
 using UnityEngine;
+using Photon.Pun;
 
 
-    //-------------------------------------------------------------
-    //--APR Player
-    //--Hand Contact
-    //
-    //--Unity Asset Store - Version 1.0
-    //
-    //--By The Famous Mouse
-    //
-    //--Twitter @FamousMouse_Dev
-    //--Youtube TheFamouseMouse
-    //-------------------------------------------------------------
+
 
 
 public class HandContact : MonoBehaviour
 {
-    public APRController APR_Player;
     
+    public APRController APR_Player;
+    [SerializeField] private PhotonView PV;
+
+
     //Is left or right hand
-	public bool Left;
+    public bool Left;
     
     //Have joint/grabbed
 	public bool hasJoint;
@@ -28,7 +22,12 @@ public class HandContact : MonoBehaviour
 
     void Update()
     {
-        if(APR_Player.useControls)
+        PV = GetComponent<PhotonView>();
+        if (PV.IsMine)
+        {
+
+        
+            if (APR_Player.useControls)
         {
             //Left Hand
             //On input release destroy joint
@@ -62,11 +61,18 @@ public class HandContact : MonoBehaviour
                 }
             }
         }
+        }
+        else
+        {
+            return;
+        }
     }
 
     //Grab on collision when input is used
     void OnCollisionEnter(Collision col)
     {
+        if(PV.IsMine)
+        { 
         if(APR_Player.useControls)
         {
             //Left Hand
@@ -100,5 +106,6 @@ public class HandContact : MonoBehaviour
                 }
             }
         }
+    }
     }
 }

@@ -1,32 +1,34 @@
 ﻿using UnityEngine;
+using Photon.Pun;
 
 
-    //-------------------------------------------------------------
-    //--APR Player
-    //--Feet Contact
-    //
-    //--Unity Asset Store - Version 1.0
-    //
-    //--By The Famous Mouse
-    //
-    //--Twitter @FamousMouse_Dev
-    //--Youtube TheFamouseMouse
-    //-------------------------------------------------------------
 
 
 public class FeetContact : MonoBehaviour
 {
+
+
 	public APRController APR_Player;
-	
+    [SerializeField] private PhotonView PV;
+
     //Alert APR player when feet colliders enter ground object layer
     void OnCollisionEnter(Collision col)
 	{
-        if(!APR_Player.isJumping && APR_Player.inAir)
+
+        PV = GetComponent<PhotonView>();
+        if (PV.IsMine)
         {
-            if(col.gameObject.layer == LayerMask.NameToLayer("Ground"))
+            if (!APR_Player.isJumping && APR_Player.inAir)
             {
-                APR_Player.PlayerLanded();
+                if (col.gameObject.layer == LayerMask.NameToLayer("Ground"))
+                {
+                    APR_Player.PlayerLanded();
+                }
             }
+        }
+        else
+        {
+            return;
         }
 	}
 }
